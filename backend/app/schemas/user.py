@@ -8,6 +8,9 @@ class UserCreate(BaseModel):
     email: Optional[EmailStr] = None
     full_name: Optional[str] = None
 
+class UserAdminCreate(UserCreate):
+    role: Optional[Role] = None
+
 class UserRead(BaseModel):
     id: int
     username: str

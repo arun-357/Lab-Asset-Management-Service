@@ -4,6 +4,8 @@ from typing import List
 
 from app.api.deps import get_db, get_current_user
 from app.schemas.reservation import ReservationCreate, ReservationRead
+from datetime import datetime, timedelta
+from fastapi import Query
 from app.crud.crud_reservation import check_conflict, create_reservation, list_reservations_for_asset, get_reservation, cancel_reservation
 from app.crud.crud_asset import get_asset
 
@@ -29,9 +31,37 @@ def create_new_reservation(payload: ReservationCreate, db: Session = Depends(get
     res = create_reservation(db, payload, user_name=current_user.username)
     return res
 
-@router.get("/asset/{asset_id}", response_model=List[ReservationRead], dependencies=[Depends(get_current_user)])
-def reservations_for_asset(asset_id: int, db: Session = Depends(get_db)):
-    return list_reservations_for_asset(db, asset_id)
+@router.get("/asset/{asset_id}", response_model=List[ReservationRead])
+def reservations_for_asset(
+    asset_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user),
+    all: bool = Query(False, description="If true, return all reservations (admin only)")
+):
+    reservations = list_reservations_for_asset(db, asset_id)
+
+    # filtering
+    if not all:
+        now = datetime.utcnow()
+        week_start = (now - timedelta(days=now.weekday())).replace(hour=0, minute=0, second=0, microsecond=0)
+        week_end = week_start + timedelta(days=7)
+        reservations = [r for r in reservations if r.start_time < week_end and r.end_time > week_start]
+    else:
+        if current_user.role.value != "admin":
+            raise HTTPException(status_code=403, detail="Only admin can request all reservations")
+    masked = []
+    for r in reservations:
+        data = {
+            "id": r.id,
+            "asset_id": r.asset_id,
+            "user_name": r.user_name if r.user_name == current_user.username else "***",
+            "start_time": r.start_time,
+            "end_time": r.end_time,
+            "purpose": r.purpose,
+            "status": r.status,
+        }
+        masked.append(data)
+    return masked
 
 @router.delete("/{reservation_id}", status_code=204)
 def cancel_existing_reservation(reservation_id: int, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
