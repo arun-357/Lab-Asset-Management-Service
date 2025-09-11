@@ -11,12 +11,13 @@ Prerequisites: Python 3.10+, (optional) MySQL if you want a real DB; otherwise u
 
 ```bash
 # root
+cd backend
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -r backend/requirements.txt
+pip install -r requirements.txt
 
 # Run API
-uvicorn app.main:app --reload --app-dir backend/app --port 8000
+uvicorn app.main:app --reload --port 8000
 ```
 The API will be at: http://localhost:8000
 Docs (OpenAPI): http://localhost:8000/docs
@@ -34,6 +35,7 @@ Tables auto‑create on startup (dev convenience). For production migrations —
 
 ### Frontend (React + Vite)
 ```bash
+# run it in diffrent terminal / server
 cd frontend
 npm install
 npm run dev
@@ -51,6 +53,14 @@ VITE_API_URL=http://localhost:8000/api/v1
 - JWT bearer tokens (HS256) issued via `/api/v1/auth/token`.
 - All asset & reservation operations (except register/login) require a valid token.
 - Admin‑only endpoints protected by role check.
+
+### 2.1 First-Time Bootstrap (Initial Admin Creation) (Testing purpose only)
+When the database is empty (no users):
+1. Backend exposes `/api/v1/auth/bootstrap-status` returning `{ "empty": true }`.
+2. Frontend detects this and shows a "Bootstrap Admin" button in the header (only visible when logged out and empty state confirmed).
+3. Clicking it opens a modal to register the first user.
+4. The first registered user is automatically given the `admin` role server-side. All later registrations default to `user`.
+5. After creating the first admin, use the normal Login modal to authenticate.
 
 Example cURL:
 ```bash
@@ -75,6 +85,7 @@ Base prefix: `/api/v1`
 ### Auth
 | Method | Path | Auth | Description | Payload | Response |
 |--------|------|------|-------------|---------|----------|
+| GET | `/auth/bootstrap-status` | None | Indicates if zero users exist (`empty`) | — | `200 {empty:boolean}` |
 | POST | `/auth/register` | None | Create a normal user account | `{username,password,email?}` | `201 UserRead` |
 | POST | `/auth/token` | Form | Obtain JWT token (scope = role) | `username,password` (form) | `200 {access_token,token_type}` |
 
@@ -149,7 +160,8 @@ All user capabilities plus:
 - Assets page is the landing view (inline asset creation form appears for admins only when toggled).
 - Users management page (admins) to add users & toggle admin role.
 - Reservation listing shows anonymized bookings; your own name is visible.
-- Admin login page enforces admin scope.
+- Hidden admin login route: `/admin-login` (manual navigation only; header omits link).
+- Bootstrap admin modal appears only when system has zero users (see 2.1) and disappears permanently after first admin creation.
 
 ---
 ## 7. Testing (Backend)
