@@ -20,3 +20,6 @@ class ReservationRead(BaseModel):
 
     class Config:
         orm_mode = True
+
+class ReservationMaskedRead(ReservationRead):
+    user_name: str
