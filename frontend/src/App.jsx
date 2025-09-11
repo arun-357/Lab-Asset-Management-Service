@@ -4,6 +4,7 @@ import Header, { LoginModal } from "./components/Header";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import AssetListPage from "./pages/AssetListPage";
+import AssetDetailPage from "./pages/AssetDetailPage";
 import UsersPage from "./pages/UsersPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import useAuth from "./auth/useAuth";
@@ -30,6 +31,7 @@ export default function App(){
       <main className="container mx-auto p-4">
         <Routes>
           <Route path="/" element={<AssetListPage />} />
+          <Route path="/assets/:id" element={<AssetDetailPage />} />
           <Route path="/users" element={<AdminOnly><UsersPage /></AdminOnly>} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
