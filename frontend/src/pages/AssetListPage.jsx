@@ -43,7 +43,10 @@ export default function AssetListPage(){
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
         <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">Assets</h1>
         {user && user.roles?.includes("admin") && (
-          <button onClick={()=>setCreating(c=>!c)} className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow-sm font-medium">
+          <button
+            onClick={()=>setCreating(c=>!c)}
+            className="inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm"
+          >
             {creating ? 'Close' : 'Add Asset'}
           </button>
         )}
