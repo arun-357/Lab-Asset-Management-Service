@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.egg-info/
+*.egg
+*.log
+*.sqlite3
+*.db
+*.env
+.env.*
+.envrc
+venv/
+ENV/
+env/
+backend/asset/
+
+# FastAPI
+instance/
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+*.log
+dist/
+build/
+
+# React/Vite
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# Test/coverage
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+
+# Others
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Ignore local database and test files
+backend/scripts/create_test_db.sql
