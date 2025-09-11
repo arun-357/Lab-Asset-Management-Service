@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+sqlmodel
+SQLAlchemy
+pymysql        # if using MySQL
+python-jose[cryptography]
+passlib[bcrypt]
+python-dotenv
+email-validator  # required for pydantic EmailStr
+python-multipart  # required for form data (OAuth2, file uploads)
+pytest
+pytest-cov
+httpx
