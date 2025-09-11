@@ -38,8 +38,14 @@ export default function UsersPage(){
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">Users (Admin)</h2>
-        <button onClick={()=>setCreating(c=>!c)} className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium">{creating ? 'Close' : 'Add User'}</button>
+        <button onClick={()=>setCreating(c=>!c)} className="inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm">{creating ? 'Close' : 'Add User'}</button>
       </div>
+      {users.length === 0 && (
+        <div className="p-4 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm">
+          <p className="font-medium mb-1">No users yet</p>
+          <p>You can bootstrap the system by creating the first admin user below. Choose role = Admin.</p>
+        </div>
+      )}
       {creating && (
         <form onSubmit={createUser} className="grid gap-3 bg-white/70 backdrop-blur-sm p-5 rounded-xl ring-1 ring-slate-200 shadow">
           {error && <div className="text-sm text-red-600">{error}</div>}
