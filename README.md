@@ -191,3 +191,6 @@ The Admin Dashboard gives administrators a quick snapshot of system usage and up
 }
 ```
 
+## 9. Postman Collection
+- [Asset.postman_collection.json](https://github.com/user-attachments/files/22289493/Asset.postman_collection.json)
+
