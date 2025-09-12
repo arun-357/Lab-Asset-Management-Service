@@ -8,6 +8,7 @@ import AssetDetailPage from "./pages/AssetDetailPage";
 import UsersPage from "./pages/UsersPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import useAuth from "./auth/useAuth";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function Private({ children }) {
   const { user, loading } = useAuth();
@@ -33,6 +34,7 @@ export default function App(){
           <Route path="/" element={<AssetListPage />} />
           <Route path="/assets/:id" element={<AssetDetailPage />} />
           <Route path="/users" element={<AdminOnly><UsersPage /></AdminOnly>} />
+          <Route path="/dashboard" element={<AdminOnly><AdminDashboard /></AdminOnly>} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/admin-login" element={<AdminLoginPage />} />
