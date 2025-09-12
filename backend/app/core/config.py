@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     TEST_SQLALCHEMY_DATABASE_URI: str = "mysql+pymysql://asset_test:asset_test_pwd@localhost/asset_management_test"
 
     # Auth
-    SECRET_KEY: str = "please-change-me-in-prod"
+    SECRET_KEY: str = "base64key"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 1 day
     ALGORITHM: str = "HS256"
 
