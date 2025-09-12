@@ -2,8 +2,6 @@
 
 Full‑stack application for managing lab assets and time‑bound reservations. Backend: FastAPI + SQLModel (JWT auth, role based). Frontend: React (Vite) + Tailwind. Supports normal users and administrators with distinct capabilities.
 
-> Note: Admin dashboard UI (metrics view) intentionally not documented here yet per request.
-
 ---
 ## 1. Quick Start
 ### Backend (FastAPI)
@@ -169,3 +167,27 @@ Install dev deps already included in `requirements.txt` then run:
 ```bash
 pytest -q
 ```
+
+---
+## 8. Admin Dashboard
+The Admin Dashboard gives administrators a quick snapshot of system usage and upcoming activity.
+
+### 8.1 Frontend Route
+- Navigate to: `/dashboard` (must be logged in as an admin).  
+- The page fetches metrics from the backend summary endpoint (below) and renders them in a table.
+
+### 8.2 Backend Endpoint
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| GET | `/api/v1/admin/summary` | Admin | Returns aggregate system metrics |
+
+### 8.3 Sample Response
+```json
+{
+  "users": { "total": 5, "admins": 2, "active": 5 },
+  "assets": { "total": 12 },
+  "reservations": { "total": 41, "active": 9, "upcoming_7d": 6 },
+  "generated_at": "2025-09-12T09:15:27.482193Z"
+}
+```
+
