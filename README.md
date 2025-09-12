@@ -194,3 +194,23 @@ The Admin Dashboard gives administrators a quick snapshot of system usage and up
 ## 9. Postman Collection
 - [Asset.postman_collection.json](https://github.com/user-attachments/files/22289493/Asset.postman_collection.json)
 
+---
+## 10. Docker Deployment
+Run the full stack (MySQL + FastAPI backend + Vite-built frontend) with a single command.
+
+### 10.1 Start Stack
+```bash
+docker compose up --build
+```
+
+### 10.2 Environment Overrides
+Backend runtime env (edit `backend/.env.docker` or supply your own env file):
+- SQLALCHEMY_DATABASE_URI (default points at internal `db` service)
+- SECRET_KEY (change for any non-local usage)
+- BACKEND_CORS_ORIGINS (JSON list of allowed origins)
+
+### 10.3 Rebuild After Code Changes
+Everything:
+```bash
+docker compose up --build
+```

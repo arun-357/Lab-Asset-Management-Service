@@ -1,0 +1,19 @@
+*.pyc
+__pycache__/
+.pytest_cache/
+.DS_Store
+dist/
+
+# Python venv
+backend/.venv/
+backend/asset/
+
+# Node
+frontend/node_modules/
+frontend/.npm/
+frontend/.vite/
+
+# Env files (keep examples)
+*.env
+!backend/.env.example
+!backend/.env.docker
