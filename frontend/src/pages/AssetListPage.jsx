@@ -34,7 +34,7 @@ export default function AssetListPage(){
       setCreating(false);
       fetchAssets();
     } catch (err){
-      setCreateErr(err.response?.data?.detail || 'Failed');
+      setCreateErr('Failed');
     }
   }
 
