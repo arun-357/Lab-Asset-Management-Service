@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
 
     # DB
-    SQLALCHEMY_DATABASE_URI: str = "mysql+pymysql://asset_user:your_password@localhost/asset_management"  # override with env for mysql
+    SQLALCHEMY_DATABASE_URI: str = "sqlite:///./dev.db"  # override with env for mysql
     TEST_SQLALCHEMY_DATABASE_URI: str = "mysql+pymysql://asset_test:asset_test_pwd@localhost/asset_management_test"
 
     # Auth

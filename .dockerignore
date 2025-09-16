@@ -13,7 +13,7 @@ frontend/node_modules/
 frontend/.npm/
 frontend/.vite/
 
-# Env files (keep examples)
+# Env files
 *.env
 !backend/.env.example
 !backend/.env.docker
