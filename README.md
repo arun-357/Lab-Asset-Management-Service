@@ -77,7 +77,7 @@ curl -H "Authorization: Bearer $token" http://localhost:8000/api/v1/assets/
 ```
 
 ---
-## 3. API Endpoints (Admin dashboard endpoint intentionally omitted)
+## 3. API Endpoints
 Base prefix: `/api/v1`
 
 ### Auth
