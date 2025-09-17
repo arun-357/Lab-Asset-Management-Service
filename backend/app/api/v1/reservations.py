@@ -9,6 +9,11 @@ from fastapi import Query
 from app.crud.crud_reservation import check_conflict, create_reservation, list_reservations_for_asset, get_reservation, cancel_reservation
 from app.crud.crud_asset import get_asset
 
+from zoneinfo import ZoneInfo
+from datetime import timezone
+
+LOCAL_TZ = ZoneInfo("Asia/Kolkata") 
+
 router = APIRouter()
 
 @router.post("/", response_model=ReservationRead, status_code=201)
@@ -51,12 +56,14 @@ def reservations_for_asset(
             raise HTTPException(status_code=403, detail="Only admin can request all reservations")
     masked = []
     for r in reservations:
+        start_local = r.start_time.replace(tzinfo=timezone.utc).astimezone(LOCAL_TZ)
+        end_local = r.end_time.replace(tzinfo=timezone.utc).astimezone(LOCAL_TZ)
         data = {
             "id": r.id,
             "asset_id": r.asset_id,
             "user_name": r.user_name if r.user_name == current_user.username else "***",
-            "start_time": r.start_time,
-            "end_time": r.end_time,
+            "start_time": start_local,
+            "end_time": end_local,
             "purpose": r.purpose,
             "status": r.status,
         }
