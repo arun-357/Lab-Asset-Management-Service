@@ -105,6 +105,7 @@ export default function Header({ onOpenLogin }){
   const [bootstrapNeeded, setBootstrapNeeded] = useState(false);
   const [bootstrapOpen, setBootstrapOpen] = useState(false);
   const [checkingBootstrap, setCheckingBootstrap] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
   useEffect(()=>{
     async function check(){
       try {
@@ -118,11 +119,15 @@ export default function Header({ onOpenLogin }){
     }
     check();
   },[]);
+
+  useEffect(()=>{ setMobileOpen(false); }, [location.pathname]);
+
   return (
-    <header className="backdrop-blur bg-white/70 supports-[backdrop-filter]:bg-white/40 shadow-sm">
+    <header className="backdrop-blur bg-white/70 supports-[backdrop-filter]:bg-white/40 shadow-sm relative z-40">
       <div className="container mx-auto flex items-center justify-between p-4">
         <Link to="/" className="font-semibold text-lg bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">Lab Asset Manager</Link>
-        <nav className="flex items-center gap-4">
+        {/* Desktop nav */}
+        <nav className="hidden md:flex items-center gap-4">
           <Link to="/" className="text-slate-600 hover:text-slate-900">Assets</Link>
           {user && user.roles?.includes("admin") && (
             <>
@@ -146,6 +151,47 @@ export default function Header({ onOpenLogin }){
             )
           )}
         </nav>
+
+        <button
+          onClick={()=>setMobileOpen(o=>!o)}
+          className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md border border-slate-300 text-slate-600 hover:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          aria-label="Toggle navigation menu"
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-nav-panel"
+        >
+          <span className="sr-only">Menu</span>
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+            {mobileOpen ? <path d="M6 18L18 6M6 6l12 12" /> : <path d="M3 6h18M3 12h18M3 18h18" />}
+          </svg>
+        </button>
+      </div>
+
+      {/* Mobile panel */}
+      <div
+        id="mobile-nav-panel"
+        className={`md:hidden absolute left-0 right-0 top-full w-full origin-top transition duration-200 ${mobileOpen ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-95 pointer-events-none'} bg-white/90 backdrop-blur shadow-sm border-t border-slate-200`}
+      >
+        <div className="px-4 pt-2 pb-4 space-y-3">
+          <Link to="/" className="block text-slate-700 hover:text-indigo-600" onClick={()=>setMobileOpen(false)}>Assets</Link>
+          {user && user.roles?.includes('admin') && (
+            <>
+              <Link to="/dashboard" className="block text-slate-700 hover:text-indigo-600" onClick={()=>setMobileOpen(false)}>Dashboard</Link>
+              <Link to="/users" className="block text-slate-700 hover:text-indigo-600" onClick={()=>setMobileOpen(false)}>Users</Link>
+            </>
+          )}
+          {user ? (
+            <button onClick={() => { logout(); nav('/login'); }} className="w-full text-left bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded text-sm">Logout</button>
+          ) : (
+            location.pathname === '/admin-login' ? null : (
+              <div className="space-y-2">
+                {!checkingBootstrap && bootstrapNeeded && (
+                  <button onClick={()=>{setBootstrapOpen(true); setMobileOpen(false);}} className="w-full bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded text-sm shadow-sm">Bootstrap Admin</button>
+                )}
+                <button onClick={()=>{onOpenLogin(); setMobileOpen(false);}} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded text-sm">Login</button>
+              </div>
+            )
+          )}
+        </div>
       </div>
       <RegisterBootstrapModal open={bootstrapOpen && !user} onClose={()=>setBootstrapOpen(false)} onSuccess={()=>{ /* keep open to show success message; user can close manually */ }} />
     </header>
